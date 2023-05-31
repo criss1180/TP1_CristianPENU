@@ -10,7 +10,7 @@ with open("demo_logs.txt", "r") as fichier:
         # Diviser la ligne en parties en utilisant des espaces comme délimiteurs
         parties = ligne.split(" ")
 
-        # Extraire l'adresse IP, le code de statut et l'URL
+        # Extraire l'adresse IP, le code de statut
         ip = parties[0]
         statut = parties[8]
 
