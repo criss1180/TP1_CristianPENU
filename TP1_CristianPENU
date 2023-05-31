@@ -1,0 +1,53 @@
+import json
+
+# Ouvrir le fichier de logs en lecture
+with open("demo_logs.txt", "r") as fichier:
+    # Initialiser un dictionnaire vide pour stocker les résultats
+    results = {}
+
+    # Lire chaque ligne du fichier de logs
+    for ligne in fichier:
+        # Diviser la ligne en parties en utilisant des espaces comme délimiteurs
+        parties = ligne.split(" ")
+
+        # Extraire l'adresse IP, le code de statut et l'URL
+        ip = parties[0]
+        statut = parties[8]
+
+        # Vérifier si l'adresse IP existe déjà dans le dictionnaire des résultats
+        if ip in results:
+            # Vérifier si le code de statut existe déjà pour cette adresse IP
+            if statut in results[ip]:
+                # Incrémenter le compteur pour ce code de statut
+                results[ip][statut] += 1
+            else:
+                # Ajouter le code de statut avec un compteur initial de 1
+                results[ip][statut] = 1
+        else:
+            # Ajouter l'adresse IP avec le code de statut et un compteur initial de 1
+            results[ip] = {statut: 1}
+
+# Trier les adresses IP en ordre croissant
+sorted_ips = sorted(results.keys())
+
+# Créer une liste pour stocker les résultats finaux
+final_results = []
+
+# Parcourir les adresses IP triées
+for ip in sorted_ips:
+    status_counts = results[ip]
+    ip_result = {
+        ip: status_counts
+    }
+    final_results.append(ip_result)
+
+# Créer un dictionnaire avec la structure finale
+final_data = {
+    "results": final_results
+}
+
+# Écrire les résultats dans un fichier JSON
+with open("resultat.json", "w") as fichier_resultat:
+    json.dump(final_data, fichier_resultat, indent=4)
+
+print("Le fichier JSON a été créé avec succès.")
